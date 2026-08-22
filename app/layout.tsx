@@ -95,6 +95,14 @@ export default function RootLayout({
             `,
           }}
         />
+
+        {/* GOOGLE ADSENSE */}
+        <Script
+          id="google-adsense"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6654030018352582"
+          crossOrigin="anonymous"
+        />
       </head>
 
       <body className="min-h-full bg-slate-50 text-slate-900">
