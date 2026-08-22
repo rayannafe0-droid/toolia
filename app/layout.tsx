@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -41,8 +41,63 @@ export default function RootLayout({
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-slate-50 text-slate-900">
+      <head>
+        {/* IUBENDA - BANNER DE CONSENTIMIENTO */}
+        <Script
+          id="iubenda-config"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var _iub = _iub || [];
+              _iub.csConfiguration = {
+                "siteId": 4653099,
+                "cookiePolicyId": 89189789,
+                "lang": "es",
+                "storage": {
+                  "useSiteId": true
+                }
+              };
+            `,
+          }}
+        />
 
+        <Script
+          src="https://cs.iubenda.com/autoblocking/4653099.js"
+          strategy="beforeInteractive"
+        />
+
+        <Script
+          src="https://cdn.iubenda.com/cs/gpp/stub.js"
+          strategy="beforeInteractive"
+        />
+
+        <Script
+          src="https://cdn.iubenda.com/cs/iubenda_cs.js"
+          strategy="beforeInteractive"
+          charSet="UTF-8"
+        />
+
+        {/* GOOGLE ANALYTICS */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-E1T5Y23QP7"
+          strategy="afterInteractive"
+        />
+
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-E1T5Y23QP7');
+            `,
+          }}
+        />
+      </head>
+
+      <body className="min-h-full bg-slate-50 text-slate-900">
         <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
@@ -91,11 +146,7 @@ export default function RootLayout({
         </header>
 
         {children}
-
       </body>
-
-      <GoogleAnalytics gaId="G-E1T5Y23QP7" />
-
     </html>
   );
 }
