@@ -1,3 +1,4 @@
+ 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
@@ -29,6 +30,9 @@ export const metadata: Metadata = {
     "productividad",
     "herramientas gratuitas",
   ],
+  other: {
+    "google-adsense-account": "ca-pub-6654030018352582",
+  },
 };
 
 export default function RootLayout({
@@ -36,25 +40,30 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const htmlClassName =
+    geistSans.variable +
+    " " +
+    geistMono.variable +
+    " h-full antialiased";
+
   return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="es" className={htmlClassName}>
       <head>
-        {/* IUBENDA - BANNER DE CONSENTIMIENTO */}
+        {/* IUBENDA */}
         <Script
           id="iubenda-config"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              var _iub = _iub || [];
+              var _iub = window._iub || [];
+              window._iub = _iub;
+
               _iub.csConfiguration = {
-                "siteId": 4653099,
-                "cookiePolicyId": 89189789,
-                "lang": "es",
-                "storage": {
-                  "useSiteId": true
+                siteId: 4653099,
+                cookiePolicyId: 89189789,
+                lang: "es",
+                storage: {
+                  useSiteId: true
                 }
               };
             `,
@@ -62,16 +71,19 @@ export default function RootLayout({
         />
 
         <Script
+          id="iubenda-autoblocking"
           src="https://cs.iubenda.com/autoblocking/4653099.js"
           strategy="beforeInteractive"
         />
 
         <Script
+          id="iubenda-gpp"
           src="https://cdn.iubenda.com/cs/gpp/stub.js"
           strategy="beforeInteractive"
         />
 
         <Script
+          id="iubenda-cs"
           src="https://cdn.iubenda.com/cs/iubenda_cs.js"
           strategy="beforeInteractive"
           charSet="UTF-8"
@@ -89,9 +101,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-E1T5Y23QP7');
+
+              function gtag() {
+                window.dataLayer.push(arguments);
+              }
+
+              gtag("js", new Date());
+              gtag("config", "G-E1T5Y23QP7");
             `,
           }}
         />
@@ -99,8 +115,8 @@ export default function RootLayout({
         {/* GOOGLE ADSENSE */}
         <Script
           id="google-adsense"
-          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6654030018352582"
+          strategy="afterInteractive"
           crossOrigin="anonymous"
         />
       </head>
@@ -108,7 +124,6 @@ export default function RootLayout({
       <body className="min-h-full bg-slate-50 text-slate-900">
         <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-
             {/* LOGO */}
             <a
               href="/"
@@ -119,7 +134,6 @@ export default function RootLayout({
 
             {/* NAVEGACIÓN */}
             <nav className="hidden items-center gap-7 md:flex">
-
               <a
                 href="/herramientas"
                 className="text-sm font-semibold text-slate-600 transition hover:text-blue-600"
@@ -147,9 +161,7 @@ export default function RootLayout({
               >
                 Herramientas gratis
               </a>
-
             </nav>
-
           </div>
         </header>
 
