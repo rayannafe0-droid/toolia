@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
@@ -82,9 +81,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={htmlClassName}>
       <head>
-        {/* =========================
+        {/* =====================================================
             IUBENDA
-        ========================== */}
+        ====================================================== */}
 
         <Script
           id="iubenda-config"
@@ -125,9 +124,9 @@ export default function RootLayout({
           charSet="UTF-8"
         />
 
-        {/* =========================
+        {/* =====================================================
             GOOGLE ANALYTICS
-        ========================== */}
+        ====================================================== */}
 
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-E1T5Y23QP7"
@@ -151,9 +150,9 @@ export default function RootLayout({
           }}
         />
 
-        {/* =========================
+        {/* =====================================================
             GOOGLE ADSENSE
-        ========================== */}
+        ====================================================== */}
 
         <Script
           id="google-adsense"
@@ -164,7 +163,75 @@ export default function RootLayout({
       </head>
 
       <body className="min-h-full bg-slate-50 text-slate-900">
+        {/* =====================================================
+            NAVBAR GLOBAL
+            Aparece en TODAS las páginas
+        ====================================================== */}
+
+        <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            {/* LOGO */}
+
+            <a
+              href="/"
+              className="text-2xl font-black tracking-tight"
+            >
+              Tool<span className="text-blue-600">IA</span>
+            </a>
+
+            {/* NAVEGACIÓN DESKTOP */}
+
+            <nav className="hidden items-center gap-7 md:flex">
+              <a
+                href="/herramientas"
+                className="text-sm font-semibold text-slate-600 transition hover:text-blue-600"
+              >
+                Herramientas
+              </a>
+
+              <a
+                href="/comparativas"
+                className="text-sm font-semibold text-slate-600 transition hover:text-blue-600"
+              >
+                Comparativas
+              </a>
+
+              <a
+                href="/guias"
+                className="text-sm font-semibold text-slate-600 transition hover:text-blue-600"
+              >
+                Guías
+              </a>
+
+              <a
+                href="/recomendadas"
+                className="text-sm font-semibold text-slate-600 transition hover:text-blue-600"
+              >
+                Recomendadas
+              </a>
+
+              <a
+                href="/herramientas-gratuitas"
+                className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-blue-700"
+              >
+                Herramientas gratis
+              </a>
+            </nav>
+
+            {/* =================================================
+                MENÚ MÓVIL
+                Se mantiene en todas las páginas
+            ================================================== */}
+
+            <MobileMenu />
+          </div>
+        </header>
+
+        {/* DATOS ESTRUCTURADOS */}
+
         <StructuredData />
+
+        {/* CONTENIDO DE CADA PÁGINA */}
 
         {children}
       </body>

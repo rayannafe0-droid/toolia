@@ -1,5 +1,5 @@
 "use client";
-import MobileMenu from "@/app/components/MobileMenu";
+
 import { useState } from "react";
 import { tools } from "@/data/tools";
 
@@ -113,58 +113,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
-  <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-
-    <a
-      href="/"
-      className="text-2xl font-black tracking-tight"
-    >
-      Tool<span className="text-blue-600">IA</span>
-    </a>
-
-    <div className="flex items-center gap-3">
-
-      <nav className="hidden gap-7 text-sm font-semibold md:flex">
-
-        <a href="/herramientas" className="transition hover:text-blue-600">
-          Herramientas
-        </a>
-
-        <a href="/comparativas" className="transition hover:text-blue-600">
-          Comparativas
-        </a>
-
-        <a href="/guias" className="transition hover:text-blue-600">
-          Guías
-        </a>
-
-        <a href="/recomendadas" className="transition hover:text-blue-600">
-          Recomendadas
-        </a>
-
-        <a
-          href="/herramientas-gratuitas"
-          className="transition hover:text-blue-600"
-        >
-          Herramientas gratis
-        </a>
-
-      </nav>
-
-      <a
-        href="/herramientas"
-        className="hidden rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 md:block"
-      >
-        Explorar
-      </a>
-
-      <MobileMenu />
-
-    </div>
-
-  </div>
-</header>
+     
 
       {/* =====================================================
           HERO
