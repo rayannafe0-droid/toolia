@@ -1,5 +1,5 @@
 "use client";
-
+import MobileMenu from "@/app/components/MobileMenu";
 import { useState } from "react";
 import { tools } from "@/data/tools";
 
@@ -99,24 +99,9 @@ export default function Home() {
         })
       : [];
 
-  /*
-   * ==========================================================
-   * HERRAMIENTAS DESTACADAS
-   * ==========================================================
-   */
-
   const featuredTools = featuredSlugs
     .map((slug) => tools.find((tool) => tool.slug === slug))
     .filter((tool) => tool !== undefined);
-
-  /*
-   * ==========================================================
-   * CATEGORÍAS DINÁMICAS
-   *
-   * Las categorías ahora se obtienen directamente de tools.ts.
-   * Si añadimos una nueva categoría allí, aparecerá aquí.
-   * ==========================================================
-   */
 
   const categories = Array.from(
     new Set(tools.map((tool) => tool.category))
@@ -128,79 +113,64 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
-
       <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
+  <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
 
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+    <a
+      href="/"
+      className="text-2xl font-black tracking-tight"
+    >
+      Tool<span className="text-blue-600">IA</span>
+    </a>
 
-          <a
-            href="/"
-            className="text-2xl font-black tracking-tight"
-          >
-            Tool<span className="text-blue-600">IA</span>
-          </a>
+    <div className="flex items-center gap-3">
 
-          <nav className="hidden gap-7 text-sm font-semibold md:flex">
+      <nav className="hidden gap-7 text-sm font-semibold md:flex">
 
-            <a
-              href="/herramientas"
-              className="transition hover:text-blue-600"
-            >
-              Herramientas
-            </a>
+        <a href="/herramientas" className="transition hover:text-blue-600">
+          Herramientas
+        </a>
 
-            <a
-              href="/comparativas"
-              className="transition hover:text-blue-600"
-            >
-              Comparativas
-            </a>
+        <a href="/comparativas" className="transition hover:text-blue-600">
+          Comparativas
+        </a>
 
-            <a
-              href="/guias"
-              className="transition hover:text-blue-600"
-            >
-              Guías
-            </a>
+        <a href="/guias" className="transition hover:text-blue-600">
+          Guías
+        </a>
 
-            <a
-              href="/recomendadas"
-              className="transition hover:text-blue-600"
-            >
-              Recomendadas
-            </a>
+        <a href="/recomendadas" className="transition hover:text-blue-600">
+          Recomendadas
+        </a>
 
-            <a
-              href="/herramientas-gratuitas"
-              className="transition hover:text-blue-600"
-            >
-              Herramientas gratis
-            </a>
+        <a
+          href="/herramientas-gratuitas"
+          className="transition hover:text-blue-600"
+        >
+          Herramientas gratis
+        </a>
 
-          </nav>
+      </nav>
 
-          <a
-            href="/herramientas"
-            className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700"
-          >
-            Explorar
-          </a>
+      <a
+        href="/herramientas"
+        className="hidden rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 md:block"
+      >
+        Explorar
+      </a>
 
-        </div>
+      <MobileMenu />
 
-      </header>
+    </div>
 
+  </div>
+</header>
 
       {/* =====================================================
           HERO
       ===================================================== */}
 
       <section className="border-b bg-white">
-
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
 
           <div className="mx-auto max-w-4xl">
@@ -243,7 +213,6 @@ export default function Home() {
 
           </div>
 
-
           {/* =================================================
               BUSCADOR
           ================================================= */}
@@ -282,11 +251,9 @@ export default function Home() {
 
             </div>
 
-
             {/* RESULTADOS DEL BUSCADOR */}
 
             {query && (
-
               <div className="absolute left-0 right-0 top-full z-40 mt-2 overflow-hidden rounded-2xl border bg-white text-left shadow-xl">
 
                 {filteredTools.length > 0 ? (
@@ -365,15 +332,12 @@ export default function Home() {
                 )}
 
               </div>
-
             )}
 
           </div>
 
         </div>
-
       </section>
-
 
       {/* =====================================================
           HERRAMIENTAS DESTACADAS
@@ -409,7 +373,6 @@ export default function Home() {
 
         </div>
 
-
         {featuredTools.length > 0 ? (
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -435,7 +398,6 @@ export default function Home() {
 
                 </div>
 
-
                 <div className="mt-5 flex flex-wrap gap-2">
 
                   <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
@@ -450,16 +412,13 @@ export default function Home() {
 
                 </div>
 
-
                 <h3 className="mt-5 text-2xl font-black">
                   {tool.name}
                 </h3>
 
-
                 <p className="mt-3 min-h-20 leading-7 text-slate-600">
                   {tool.description}
                 </p>
-
 
                 <div className="mt-5 flex flex-wrap gap-2">
 
@@ -480,7 +439,6 @@ export default function Home() {
                   )}
 
                 </div>
-
 
                 <a
                   href={`/herramientas/${tool.slug}`}
@@ -509,9 +467,8 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================================
-          CATEGORÍAS DINÁMICAS
+          CATEGORÍAS
       ===================================================== */}
 
       <section className="border-y bg-white py-20">
@@ -531,7 +488,6 @@ export default function Home() {
             para estudiar, trabajar, crear contenido y mejorar tu
             productividad.
           </p>
-
 
           {categories.length > 0 ? (
 
@@ -588,7 +544,6 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================================
           COMPARATIVAS
       ===================================================== */}
@@ -609,7 +564,6 @@ export default function Home() {
             Comparamos funciones, precios, facilidad de uso y casos
             de uso.
           </p>
-
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
 
@@ -633,7 +587,6 @@ export default function Home() {
 
           </div>
 
-
           <div className="mt-8 text-center">
 
             <a
@@ -648,7 +601,6 @@ export default function Home() {
         </div>
 
       </section>
-
 
       {/* =====================================================
           HERRAMIENTAS GRATIS
@@ -675,7 +627,6 @@ export default function Home() {
 
           </div>
 
-
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
             {freeTools.map((tool) => (
@@ -692,7 +643,6 @@ export default function Home() {
 
           </div>
 
-
           <a
             href="/herramientas-gratuitas"
             className="mt-8 inline-block font-bold text-blue-400"
@@ -703,7 +653,6 @@ export default function Home() {
         </div>
 
       </section>
-
 
       {/* =====================================================
           GUÍAS
@@ -740,7 +689,6 @@ export default function Home() {
 
           </div>
 
-
           <div className="mt-10 grid gap-5 md:grid-cols-3">
 
             {guides.map((guide) => (
@@ -772,7 +720,6 @@ export default function Home() {
         </div>
 
       </section>
-
 
       {/* =====================================================
           RECOMENDADAS
@@ -815,7 +762,6 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================================
           CÓMO EVALUAMOS
       ===================================================== */}
@@ -855,7 +801,6 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================================
           NEWSLETTER
       ===================================================== */}
@@ -871,7 +816,6 @@ export default function Home() {
           <p className="mx-auto mt-4 max-w-xl text-blue-100">
             Recibe novedades, herramientas y recursos útiles.
           </p>
-
 
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -903,7 +847,6 @@ export default function Home() {
 
       </section>
 
-
       {/* =====================================================
           FOOTER
       ===================================================== */}
@@ -926,7 +869,6 @@ export default function Home() {
               </p>
 
             </div>
-
 
             <div>
 
@@ -975,7 +917,6 @@ export default function Home() {
 
             </div>
 
-
             <div>
 
               <h3 className="font-bold">
@@ -1008,7 +949,6 @@ export default function Home() {
               </div>
 
             </div>
-
 
             <div>
 
@@ -1051,7 +991,6 @@ export default function Home() {
             </div>
 
           </div>
-
 
           <div className="mt-12 border-t pt-8 text-sm text-slate-500">
             © 2026 ToolIA. Todos los derechos reservados.
