@@ -7,6 +7,8 @@ import { tools } from "@/data/tools";
 export default function HerramientasPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Todas");
+  const [pricing, setPricing] = useState("Todas");
+  const [sort, setSort] = useState("Relevancia");
 
   const categories = [
     "Todas",
@@ -16,20 +18,51 @@ export default function HerramientasPage() {
   const filteredTools = useMemo(() => {
     const query = search.toLowerCase().trim();
 
-    return tools.filter((tool) => {
+    const result = tools.filter((tool) => {
       const matchesSearch =
         query === "" ||
         tool.name.toLowerCase().includes(query) ||
         tool.description.toLowerCase().includes(query) ||
         tool.category.toLowerCase().includes(query) ||
-        tool.subcategory?.toLowerCase().includes(query);
+        tool.subcategory?.toLowerCase().includes(query) ||
+        tool.useCases?.some((useCase) =>
+          useCase.toLowerCase().includes(query)
+        );
 
       const matchesCategory =
         category === "Todas" || tool.category === category;
 
-      return matchesSearch && matchesCategory;
+      const matchesPricing =
+        pricing === "Todas" ||
+        (pricing === "Gratis" && tool.freePlan === true) ||
+        (pricing === "De pago" && tool.freePlan === false);
+
+      return matchesSearch && matchesCategory && matchesPricing;
     });
-  }, [search, category]);
+
+    return [...result].sort((a, b) => {
+      if (sort === "Valoración") {
+        return (b.rating ?? 0) - (a.rating ?? 0);
+      }
+
+      if (sort === "Nombre A-Z") {
+        return a.name.localeCompare(b.name);
+      }
+
+      if (sort === "Nombre Z-A") {
+        return b.name.localeCompare(a.name);
+      }
+
+      return 0;
+    });
+  }, [search, category, pricing, sort]);
+
+  const clearFilters = () => {
+    setSearch("");
+    setCategory("Todas");
+    setPricing("Todas");
+    setSort("Relevancia");
+  };
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -73,6 +106,13 @@ export default function HerramientasPage() {
               className="hover:text-blue-600"
             >
               Herramientas gratis
+            </Link>
+
+            <Link
+              href="/recomendadas"
+              className="hover:text-blue-600"
+            >
+              Recomendadas
             </Link>
 
           </nav>
@@ -126,6 +166,7 @@ export default function HerramientasPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar herramienta, categoría o necesidad..."
                 className="w-full bg-transparent px-2 py-4 outline-none"
+                aria-label="Buscar herramientas"
               />
 
               {search && (
@@ -156,29 +197,81 @@ export default function HerramientasPage() {
             <div className="rounded-2xl border bg-white p-6">
 
               <h2 className="text-lg font-black">
-                Categorías
+                Filtros
               </h2>
 
-              <div className="mt-5 space-y-2">
+              {/* CATEGORÍAS */}
+              <div className="mt-6">
 
-                {categories.map((item) => (
+                <p className="mb-3 text-xs font-black uppercase tracking-wide text-slate-400">
+                  Categoría
+                </p>
 
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setCategory(item)}
-                    className={`w-full rounded-xl px-4 py-3 text-left text-sm font-bold transition ${
-                      category === item
-                        ? "bg-blue-600 text-white"
-                        : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                  >
-                    {item}
-                  </button>
+                <div className="space-y-2">
 
-                ))}
+                  {categories.map((item) => (
+
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => setCategory(item)}
+                      className={`w-full rounded-xl px-4 py-3 text-left text-sm font-bold transition ${
+                        category === item
+                          ? "bg-blue-600 text-white"
+                          : "text-slate-600 hover:bg-slate-100"
+                      }`}
+                    >
+                      {item}
+                    </button>
+
+                  ))}
+
+                </div>
 
               </div>
+
+              {/* PRECIO */}
+              <div className="mt-7 border-t pt-6">
+
+                <p className="mb-3 text-xs font-black uppercase tracking-wide text-slate-400">
+                  Precio
+                </p>
+
+                <div className="space-y-2">
+
+                  {["Todas", "Gratis", "De pago"].map((item) => (
+
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => setPricing(item)}
+                      className={`w-full rounded-xl px-4 py-3 text-left text-sm font-bold transition ${
+                        pricing === item
+                          ? "bg-blue-600 text-white"
+                          : "text-slate-600 hover:bg-slate-100"
+                      }`}
+                    >
+                      {item === "Gratis" && "✓ "}
+                      {item === "De pago" && "💳 "}
+                      {item}
+                    </button>
+
+                  ))}
+
+                </div>
+
+              </div>
+
+              {/* LIMPIAR */}
+              {(category !== "Todas" || pricing !== "Todas" || search) && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="mt-7 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50"
+                >
+                  Limpiar filtros
+                </button>
+              )}
 
             </div>
 
@@ -187,7 +280,8 @@ export default function HerramientasPage() {
           {/* HERRAMIENTAS */}
           <div className="flex-1">
 
-            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            {/* CABECERA RESULTADOS */}
+            <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
 
               <div>
 
@@ -204,17 +298,85 @@ export default function HerramientasPage() {
 
               </div>
 
-              {category !== "Todas" && (
-                <button
-                  type="button"
-                  onClick={() => setCategory("Todas")}
-                  className="text-sm font-bold text-blue-600 hover:text-blue-700"
+              {/* ORDENAR */}
+              <div className="flex items-center gap-3">
+
+                <label
+                  htmlFor="sort"
+                  className="text-sm font-bold text-slate-500"
                 >
-                  Ver todas
-                </button>
-              )}
+                  Ordenar:
+                </label>
+
+                <select
+                  id="sort"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  className="rounded-xl border bg-white px-4 py-3 text-sm font-bold outline-none focus:border-blue-500"
+                >
+                  <option value="Relevancia">
+                    Relevancia
+                  </option>
+
+                  <option value="Valoración">
+                    Mejor valoradas
+                  </option>
+
+                  <option value="Nombre A-Z">
+                    Nombre A-Z
+                  </option>
+
+                  <option value="Nombre Z-A">
+                    Nombre Z-A
+                  </option>
+                </select>
+
+              </div>
 
             </div>
+
+            {/* FILTROS ACTIVOS */}
+            {(category !== "Todas" || pricing !== "Todas" || search) && (
+
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+
+                <span className="text-sm font-bold text-slate-500">
+                  Filtros:
+                </span>
+
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => setSearch("")}
+                    className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700"
+                  >
+                    🔎 {search} ×
+                  </button>
+                )}
+
+                {category !== "Todas" && (
+                  <button
+                    type="button"
+                    onClick={() => setCategory("Todas")}
+                    className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700"
+                  >
+                    {category} ×
+                  </button>
+                )}
+
+                {pricing !== "Todas" && (
+                  <button
+                    type="button"
+                    onClick={() => setPricing("Todas")}
+                    className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700"
+                  >
+                    {pricing} ×
+                  </button>
+                )}
+
+              </div>
+
+            )}
 
             {/* GRID */}
             {filteredTools.length > 0 ? (
@@ -225,7 +387,7 @@ export default function HerramientasPage() {
 
                   <article
                     key={tool.slug}
-                    className="rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                    className="group rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                   >
 
                     {/* TOP */}
@@ -289,6 +451,24 @@ export default function HerramientasPage() {
 
                     </div>
 
+                    {/* FEATURES */}
+                    {tool.features && tool.features.length > 0 && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+
+                        {tool.features.slice(0, 3).map((feature) => (
+
+                          <span
+                            key={feature}
+                            className="rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-500"
+                          >
+                            {feature}
+                          </span>
+
+                        ))}
+
+                      </div>
+                    )}
+
                     {/* BUTTON */}
                     <div className="mt-7">
 
@@ -326,10 +506,7 @@ export default function HerramientasPage() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    setSearch("");
-                    setCategory("Todas");
-                  }}
+                  onClick={clearFilters}
                   className="mt-6 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white hover:bg-blue-700"
                 >
                   Ver todas las herramientas

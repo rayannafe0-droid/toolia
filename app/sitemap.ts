@@ -1,42 +1,90 @@
 import type { MetadataRoute } from "next";
+import { tools } from "@/data/tools";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const baseUrl = "https://thetoolia.com";
+
+  const staticPages: MetadataRoute.Sitemap = [
     {
-      url: "https://thetoolia.com",
+      url: baseUrl,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
     },
     {
-      url: "https://thetoolia.com/herramientas",
+      url: `${baseUrl}/herramientas`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
-      url: "https://thetoolia.com/herramientas-gratuitas",
+      url: `${baseUrl}/herramientas-gratuitas`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
-      url: "https://thetoolia.com/herramientas/chatgpt",
+      url: `${baseUrl}/guias`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
-      url: "https://thetoolia.com/herramientas/claude",
+      url: `${baseUrl}/comparativas`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
-      url: "https://thetoolia.com/herramientas/gemini",
+      url: `${baseUrl}/mejores-ia-para-estudiar`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
-      url: "https://thetoolia.com/guias",
+      url: `${baseUrl}/recomendadas`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     {
-      url: "https://thetoolia.com/comparativas",
+      url: `${baseUrl}/sobre-nosotros`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
-      url: "https://thetoolia.com/mejores-ia-para-estudiar",
+      url: `${baseUrl}/contacto`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/privacidad`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cookies`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terminos`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
   ];
+
+  const toolPages: MetadataRoute.Sitemap = tools.map((tool) => ({
+    url: `${baseUrl}/herramientas/${tool.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...toolPages];
 }

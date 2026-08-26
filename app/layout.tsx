@@ -1,7 +1,7 @@
- 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import StructuredData from "./components/StructuredData";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,12 +15,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://thetoolia.com"),
+
   title: {
     default: "ToolIA | Herramientas de Inteligencia Artificial",
     template: "%s | ToolIA",
   },
+
   description:
     "Descubre las mejores herramientas de inteligencia artificial, productividad y tecnología en ToolIA.",
+
   keywords: [
     "inteligencia artificial",
     "herramientas IA",
@@ -30,6 +34,33 @@ export const metadata: Metadata = {
     "productividad",
     "herramientas gratuitas",
   ],
+
+  alternates: {
+    canonical: "https://thetoolia.com",
+  },
+
+  openGraph: {
+    type: "website",
+    locale: "es_ES",
+    url: "https://thetoolia.com",
+    siteName: "ToolIA",
+    title: "ToolIA | Herramientas de Inteligencia Artificial",
+    description:
+      "Descubre las mejores herramientas de inteligencia artificial, productividad y tecnología en ToolIA.",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "ToolIA | Herramientas de Inteligencia Artificial",
+    description:
+      "Descubre las mejores herramientas de inteligencia artificial, productividad y tecnología en ToolIA.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
   other: {
     "google-adsense-account": "ca-pub-6654030018352582",
   },
@@ -49,10 +80,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={htmlClassName}>
       <head>
-        {/* IUBENDA */}
+        {/* =========================
+            IUBENDA
+        ========================== */}
+
         <Script
           id="iubenda-config"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               var _iub = window._iub || [];
@@ -73,23 +107,26 @@ export default function RootLayout({
         <Script
           id="iubenda-autoblocking"
           src="https://cs.iubenda.com/autoblocking/4653099.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
 
         <Script
           id="iubenda-gpp"
           src="https://cdn.iubenda.com/cs/gpp/stub.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
 
         <Script
           id="iubenda-cs"
           src="https://cdn.iubenda.com/cs/iubenda_cs.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           charSet="UTF-8"
         />
 
-        {/* GOOGLE ANALYTICS */}
+        {/* =========================
+            GOOGLE ANALYTICS
+        ========================== */}
+
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-E1T5Y23QP7"
           strategy="afterInteractive"
@@ -112,7 +149,10 @@ export default function RootLayout({
           }}
         />
 
-        {/* GOOGLE ADSENSE */}
+        {/* =========================
+            GOOGLE ADSENSE
+        ========================== */}
+
         <Script
           id="google-adsense"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6654030018352582"
@@ -122,9 +162,14 @@ export default function RootLayout({
       </head>
 
       <body className="min-h-full bg-slate-50 text-slate-900">
+        {/* =========================
+            NAVBAR
+        ========================== */}
+
         <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             {/* LOGO */}
+
             <a
               href="/"
               className="text-2xl font-black tracking-tight"
@@ -133,6 +178,7 @@ export default function RootLayout({
             </a>
 
             {/* NAVEGACIÓN */}
+
             <nav className="hidden items-center gap-7 md:flex">
               <a
                 href="/herramientas"
@@ -156,6 +202,13 @@ export default function RootLayout({
               </a>
 
               <a
+                href="/recomendadas"
+                className="text-sm font-semibold text-slate-600 transition hover:text-blue-600"
+              >
+                Recomendadas
+              </a>
+
+              <a
                 href="/herramientas-gratuitas"
                 className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-blue-700"
               >
@@ -164,6 +217,8 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
+
+        <StructuredData />
 
         {children}
       </body>
